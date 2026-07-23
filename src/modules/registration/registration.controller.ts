@@ -1,5 +1,9 @@
 // Controllers will receive HTTP requests and return HTTP responses.
+import { OTPService } from "../service/otp.service.js";
+
 export class RegistrationController {
+  constructor(private otpService: OTPService) {}
+
   public async createRegistration(_request: any, response: any) {
       // TODO: Extract name and email from _request
       const { name, email } = _request.body;
@@ -17,10 +21,11 @@ export class RegistrationController {
 
 
       // generate OTP
+      const sessionId = "123";
+      const otp = await this.otpService.generateOTP(email, sessionId);
 
-      // save OTP and store it in the database with a TTL of 5 minutes
-      
+
       // send OTP via email to the user
-      response.status(201).json({ message: "Registration created successfully." });
+      response.status(201).json({ message: "Registration created successfully with OTP sent to your email." + otp });
   }
 }

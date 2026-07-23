@@ -4,9 +4,9 @@ import { IOTPRepository } from "../repository/otp.repository.js";
 
 export class OTPService {
   constructor(private otpRepository: IOTPRepository) {}
-  async generateOTP(email: string): Promise<string> {
+  async generateOTP(email: string, sessionId: string): Promise<string> {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    await this.otpRepository.saveOTP(email, otp);
+    await this.otpRepository.saveOTP(email, sessionId, otp);
     return otp;
   }
 
