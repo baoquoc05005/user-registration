@@ -1,5 +1,5 @@
 import {OTP} from "../model/otp.model.js";
-import {dbInstance} from "../../../connector/sql_lite_client.js";
+import {getDatabase} from "../../../connector/sql_lite_client.js";
 
 export interface IOTPRepository {
   saveOTP(email: string, sessionId: string, otp: string): Promise<void>;
@@ -16,7 +16,8 @@ export class OTPRepository implements IOTPRepository {
     // Implementation for saving OTP with expiration
 
     const newOtp: OTP = { id: generatedId, email: email, sessionId: sessionId, otpValue: otp, expiresAt, createdAt: new Date(), updatedAt: new Date() };
-    dbInstance.run(
+    const db = await getDatabase();
+    db.run(
       `INSERT INTO otps (id, email, sessionId, otpValue, expiresAt, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [newOtp.id, newOtp.email, newOtp.sessionId, newOtp.otpValue, newOtp.expiresAt.toISOString(), newOtp.createdAt.toISOString(), newOtp.updatedAt.toISOString()]
     );
