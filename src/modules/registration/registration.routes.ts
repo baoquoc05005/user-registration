@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { RegistrationController } from './registration.controller.js';
+import { OTPService } from "./service/otp.service.js";
+import { OTPRepository } from "./repository/otp.repository.js";
+
 
 export const registrationRouter = Router();
+
 const registrationController = new RegistrationController();
 
 // TODO Lesson 1: Add POST / to accept name and email.
@@ -18,6 +22,10 @@ registrationRouter.post("/", (_request, response) => {
 });
 
 registrationRouter.post("/:registrationId/verify-otp", (_request, response) => {
+  registrationController.verifyOTP(_request, response);
 
-  response.status(200).json({ message: "OTP verified successfully." });
+});
+
+registrationRouter.post("/:registrationId/complete", (_request, response) => {
+  registrationController.completeRegistration(_request, response);
 });

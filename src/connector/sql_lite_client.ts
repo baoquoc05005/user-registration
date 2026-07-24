@@ -14,6 +14,7 @@ export async function getDatabase(): Promise<Database> {
     await dbInstance.exec(`
       CREATE TABLE IF NOT EXISTS otps (
         id TEXT PRIMARY KEY,
+        email TEXT NOT NULL,
         sessionId TEXT NOT NULL,
         otpValue TEXT NOT NULL,
         expiresAt TEXT NOT NULL,
@@ -39,6 +40,8 @@ export async function getDatabase(): Promise<Database> {
       CREATE TABLE IF NOT EXISTS registrations (
         id TEXT PRIMARY KEY,
         sessionId TEXT NOT NULL,
+        email TEXT NOT NULL,
+        verifiedEmail INTEGER NOT NULL,
         createdAt TEXT NOT NULL
       );
     `);
